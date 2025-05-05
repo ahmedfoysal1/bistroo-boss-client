@@ -21,11 +21,6 @@ const Login = () => {
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
 
-  const handleGoogleLogin = () => {
-    googleSignIn();
-    navigate(from, { replace: true });
-  };
-
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
