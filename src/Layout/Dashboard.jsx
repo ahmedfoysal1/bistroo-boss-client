@@ -12,10 +12,11 @@ import { FaUsers } from "react-icons/fa";
 import { FaBookBookmark } from "react-icons/fa6";
 import { BsFillMenuButtonFill } from "react-icons/bs";
 import { MdOutlineRestaurant } from "react-icons/md";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
   const [cart] = useCart();
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   return (
     <div className="flex">
       <div className="w-44  min-h-screen bg-orange-400">
