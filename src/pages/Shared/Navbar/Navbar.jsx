@@ -3,10 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { BsCartDash } from "react-icons/bs";
 import useCart from "../../../hooks/useCart";
+import useAdmin from "../../../hooks/useAdmin";
+import { MdSpaceDashboard } from "react-icons/md";
 
 const Navbar = () => {
   const { user, signOutUser } = useContext(AuthContext);
   const [cart] = useCart();
+  const [isAdmin] = useAdmin();
 
   const handleLogOut = () => {
     signOutUser()
@@ -30,14 +33,28 @@ const Navbar = () => {
       <li>
         <NavLink>About</NavLink>
       </li>
-      <li>
-        <NavLink to={"/dashboard/cart"}>
-          <button className="btn">
-            <BsCartDash />{" "}
-            <div className="badge badge-sm badge-secondary">+{cart.length}</div>
-          </button>
-        </NavLink>
-      </li>
+      {user && (
+        <li>
+          <NavLink to={isAdmin ? "/dashboard/allUsers" : "/dashboard/cart"}>
+            {isAdmin ? (
+              <>
+                <button className="btn">
+                  <MdSpaceDashboard /> Dashboard
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="btn">
+                  <BsCartDash />{" "}
+                  <div className="badge badge-sm badge-secondary">
+                    +{cart.length}
+                  </div>
+                </button>
+              </>
+            )}
+          </NavLink>
+        </li>
+      )}
     </>
   );
   return (
@@ -79,9 +96,23 @@ const Navbar = () => {
         <div className="navbar-end">
           {user ? (
             <>
-              <button onClick={handleLogOut} className="btn">
-                Log out
-              </button>
+              <div className="dropdown dropdown-hover dropdown-end">
+                <div className="avatar avatar-online avatar-placeholder">
+                  <div className="bg-neutral ring-primary ring-offset-base-100 ring-2 ring-offset-2 w-16 rounded-full">
+                    <img src={user.photoURL} alt="" />
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                >
+                  <li>
+                    <button onClick={handleLogOut} className="btn">
+                      Log out
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </>
           ) : (
             <>
